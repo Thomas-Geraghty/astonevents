@@ -50,9 +50,9 @@ class database {
             $values .= ", ";
         }
 
-        $command = "INSERT INTO".$table."(".$fields.") VALUES(".$values.")";
+        $sql = "INSERT INTO".$table."(".$fields.") VALUES(".$values.")";
 
-        $this->dbConnection->run($command);
+        $this->dbConnection->run($sql);
     }
 }
 ?>
