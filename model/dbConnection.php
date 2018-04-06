@@ -20,10 +20,22 @@ class dbConnection {
     }
 
     /*
+ * Kills connection upon all object references being removed,
+ */
+    public function __destruct()
+    {
+        $this->closeConnection();
+    }
+
+    /*
      * Returns this connection.
      */
     public function getConnection() {
         return $this->connection;
+    }
+
+    public function run($command) {
+        $this->connection.exec($command);
     }
 
     /*
@@ -33,12 +45,6 @@ class dbConnection {
         $this->connection = null;
     }
 
-    /*
-     * Kills connection upon all object references being removed,
-     */
-    public function __destruct()
-    {
-        $this->closeConnection();
-    }
+
 }
 ?>

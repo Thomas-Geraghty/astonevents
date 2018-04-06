@@ -14,7 +14,7 @@ class database {
     private $USERNAME;
     private $PASSWORD;
 
-    private $connection = null;
+    private $dbConnection = null;
 
     /*
      * Constructs new database object, with a connection to the relevant MySQL database.
@@ -24,7 +24,7 @@ class database {
         $this->HOST = $host;
         $this->USERNAME = $username;
         $this->PASSWORD = $password;
-        $this->connection = new dbConnection($db, $host, $username, $password);
+        $this->dbConnection = new dbConnection($db, $host, $username, $password);
     }
 
     /*
@@ -32,7 +32,27 @@ class database {
      */
     public function __destruct()
     {
-        $this->connection = null;
+        $this->dbConnection = null;
+    }
+
+    public function addData($table, $data) {
+        // Data is tuple / key pair value.
+        // INSERT INTO (table)((query) ) VALUES((values) )
+
+        $fields = "";
+        $values = "";
+
+        foreach ($data as $key => $value) {
+            $fields .= $key;
+            $values .= $value;
+
+            $fields .= ", ";
+            $values .= ", ";
+        }
+
+        $command = "INSERT INTO".$table."(".$fields.") VALUES(".$values.")";
+
+        $this->dbConnection->run($command);
     }
 }
 ?>
