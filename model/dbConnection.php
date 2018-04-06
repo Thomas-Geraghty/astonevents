@@ -34,8 +34,8 @@ class dbConnection {
         return $this->connection;
     }
 
-    public function run($command) {
-        $this->connection.exec($command);
+    public function run($sql) {
+        $this->connection.exec($sql);
     }
 
     /*
