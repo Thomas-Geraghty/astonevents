@@ -1,7 +1,14 @@
-<?php
 /**
- * Created by IntelliJ IDEA.
- * User: Tom
- * Date: 05/04/2018
- * Time: 15:54
+* Author: Tom Geraghty
+* Date: 05/04/2018
+*/
+
+<?php
+
+/**
+ * Class index
+ * Index
  */
+class index {
+}
+?>
