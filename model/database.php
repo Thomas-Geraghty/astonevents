@@ -35,6 +35,10 @@ class database {
         $this->dbConnection = null;
     }
 
+    /*
+     * Adds data into table, data array must be passed as a tuple (key => value)
+     * First parameter is for the table, second is for the data array.
+     */
     public function addData($table, $data) {
         // Data is array of tuple / key pair value.
         // INSERT INTO (table)((query) ) VALUES((values) )
@@ -60,6 +64,10 @@ class database {
         $this->dbConnection->run($sql);
     }
 
+    /*
+     * Removes data into table, data array must be passed as a tuple (key => value)
+     * First parameter is for the table, second is for the data array.
+     */
     public function removeData($table, $data) {
         // Data array of tuple / key pair value.
         // DELETE FROM (table) WHERE (query) = (value)

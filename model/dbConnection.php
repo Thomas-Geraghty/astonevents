@@ -34,6 +34,9 @@ class dbConnection {
         return $this->connection;
     }
 
+    /*
+     * Execute SQL statement.
+     */
     public function run($sql) {
         $this->connection.exec($sql);
     }
@@ -44,7 +47,5 @@ class dbConnection {
     public function closeConnection() {
         $this->connection = null;
     }
-
-
 }
 ?>
