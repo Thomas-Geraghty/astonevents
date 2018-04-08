@@ -36,22 +36,46 @@ class database {
     }
 
     public function addData($table, $data) {
-        // Data is tuple / key pair value.
+        // Data is array of tuple / key pair value.
         // INSERT INTO (table)((query) ) VALUES((values) )
 
         $fields = "";
         $values = "";
+        $dataLength = count($data);
+        $iterator = 0;
 
         foreach ($data as $key => $value) {
+            $iterator++;
             $fields .= $key;
             $values .= $value;
 
-            $fields .= ", ";
-            $values .= ", ";
+            if($iterator < $dataLength) {
+                $fields .= ", ";
+                $values .= ", ";
+            }
         }
 
-        $sql = "INSERT INTO".$table."(".$fields.") VALUES(".$values.")";
+        $sql = "INSERT INTO ".$table."(".$fields.") VALUES(".$values.")";
 
+        $this->dbConnection->run($sql);
+    }
+
+    public function removeData($table, $data) {
+        // Data array of tuple / key pair value.
+        // DELETE FROM (table) WHERE (query) = (value)
+
+        $filters = "";
+        $dataLength = count($data);
+        $iterator = 0;
+
+        foreach ($data as $key => $value) {
+            $filters .= $key."=".$value;
+            if($iterator < $dataLength) {
+                $filters .= ", ";
+            }
+        }
+
+        $sql = "DELETE FROM ".$table." WHERE ".$filters;
         $this->dbConnection->run($sql);
     }
 }
