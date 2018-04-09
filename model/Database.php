@@ -27,7 +27,7 @@ class database {
      * Adds data into table, data array must be passed as a tuple (key => value)
      * First parameter is for the table, second is for the data array.
      */
-    public function addData($table, $data) {
+    public function addRecord($table, $data) {
         // Data is array of tuple / key pair value.
         // INSERT INTO (table)((query) ) VALUES((values) )
 
@@ -52,25 +52,34 @@ class database {
     }
 
     /*
-     * Removes data into table, data array must be passed as a tuple (key => value)
-     * First parameter is for the table, second is for the data array.
+     * Updates record info in database.
      */
-    public function removeData($table, $data) {
-        // Data array of tuple / key pair value.
-        // DELETE FROM (table) WHERE (query) = (value)
-
-        $filters = "";
+    public function updateRecord($table, $ID, $data) {
         $dataLength = count($data);
         $iterator = 0;
+        $fields = "";
 
         foreach ($data as $key => $value) {
-            $filters .= $key."=".$value;
+            $iterator++;
+            $fields .= $key." = ".$value;
             if($iterator < $dataLength) {
-                $filters .= ", ";
+                $fields .= ", ";
             }
         }
 
-        $sql = "DELETE FROM ".$table." WHERE ".$filters;
+        $sql = "UPDATE ".$table. " SET " .$fields." WHERE ID = ".$ID;
+        $this->dbConnection->run($sql);
+    }
+
+    /*
+     * Removes data into table, data array must be passed as a tuple (key => value)
+     * First parameter is for the table, second is for the data array.
+     */
+    public function deleteRecord($table, $ID) {
+        // Data array of tuple / key pair value.
+        // DELETE FROM (table) WHERE (query) = (value)
+
+        $sql = "DELETE FROM ".$table." WHERE ID = ".$ID;
         $this->dbConnection->run($sql);
     }
 }
