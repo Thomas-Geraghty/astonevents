@@ -16,10 +16,16 @@ class Users {
         Config::getDatabase().addRecord(self::$tableName, ["username" => $username, "password" => $password, "email" => $email, "first_mame" => $firstName, "last_name" => $lastName, "DOB" => $DOB]);
     }
 
+    /*
+     * Updates user
+     */
     public static function updateUser($userID, $data) {
         Config::getDatabase().deleteRecord(self::$tableName, $userID, $data);
     }
-    
+
+    /*
+     * Deletes user
+     */
     public static function deleteUser($userID) {
         Config::getDatabase().deleteRecord(self::$tableName, $userID);
     }
