@@ -1,37 +1,25 @@
 /**
-* Created by IntelliJ IDEA.
-* User: Tom
+* Author: Tom Geraghty
 * Date: 06/04/2018
-* Time: 16:03
 */
 
 <?php
 
 class database {
 
-    private $DBNAME;
-    private $HOST;
-    private $USERNAME;
-    private $PASSWORD;
-
     private $dbConnection = null;
 
     /*
      * Constructs new database object, with a connection to the relevant MySQL database.
      */
-    public function __construct($db, $host, $username, $password) {
-        $this->DBNAME = $db;
-        $this->HOST = $host;
-        $this->USERNAME = $username;
-        $this->PASSWORD = $password;
-        $this->dbConnection = new dbConnection($db, $host, $username, $password);
+    public function __construct($name, $host, $username, $password) {
+        $this->dbConnection = new DBConnection($name, $host, $username, $password);
     }
 
     /*
      * Closes database connection.
      */
-    public function __destruct()
-    {
+    public function __destruct() {
         $this->dbConnection = null;
     }
 
@@ -60,7 +48,6 @@ class database {
         }
 
         $sql = "INSERT INTO ".$table."(".$fields.") VALUES(".$values.")";
-
         $this->dbConnection->run($sql);
     }
 

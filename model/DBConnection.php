@@ -6,10 +6,10 @@
 <?php
 
 /**
- * Class dbConnection
+ * Class DBConnection
  * Generates a connection to the database,
  */
-class dbConnection {
+class DBConnection {
     private $connection;
 
     /*

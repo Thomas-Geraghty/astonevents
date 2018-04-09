@@ -1,14 +1,13 @@
 /**
-* Created by IntelliJ IDEA.
-* User: Tom
+* Author: Tom Geraghty
 * Date: 09/04/2018
-* Time: 00:18
 */
 
 <?php
 
 class User {
 
+    private $userID;
     private $username;
     private $password;
     private $email;
