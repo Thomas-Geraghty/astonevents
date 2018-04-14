@@ -1,9 +1,10 @@
-/**
-* Author: Tom Geraghty
-* Date: 06/04/2018
-*/
-
 <?php
+/**
+ * Author: Tom Geraghty
+ * Date: 06/04/2018
+ */
+
+require 'php/model/DBConnection.php';
 
 class database {
 
@@ -39,7 +40,7 @@ class database {
         foreach ($data as $key => $value) {
             $iterator++;
             $fields .= $key;
-            $values .= $value;
+            $values .="'".$value."'";
 
             if($iterator < $dataLength) {
                 $fields .= ", ";
@@ -47,8 +48,9 @@ class database {
             }
         }
 
-        $sql = "INSERT INTO ".$table."(".$fields.") VALUES(".$values.")";
-        $this->dbConnection->run($sql);
+        $query = "INSERT INTO ".$table." (".$fields.") VALUES (".$values.")";
+
+        $this->dbConnection->run($query);
     }
 
     /*
@@ -71,6 +73,8 @@ class database {
         $this->dbConnection->run($sql);
     }
 
+    public function fetchRecord()
+
     /*
      * Removes data into table, data array must be passed as a tuple (key => value)
      * First parameter is for the table, second is for the data array.
@@ -82,5 +86,6 @@ class database {
         $sql = "DELETE FROM ".$table." WHERE ID = ".$ID;
         $this->dbConnection->run($sql);
     }
+
 }
 ?>

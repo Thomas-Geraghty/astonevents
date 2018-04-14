@@ -1,9 +1,10 @@
-/**
-* Author: Tom Geraghty
-* Date: 09/04/2018
-*/
-
 <?php
+/**
+ * Author: Tom Geraghty
+ * Date: 09/04/2018
+ */
+
+require 'php/model/Database.php';
 
 class Config {
     const dbName = "astonevents";

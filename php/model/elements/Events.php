@@ -11,8 +11,8 @@ class Events {
     /*
      * Adds a new event to the database.
      */
-    public static function createEvent($eventName, $userID, $date) {
-        Config::getDatabase().addData(self::$tableName, ["event_name" => $eventName, "user_id" => $userID, "date" => $date]);
+    public static function createEvent($eventName, $userID, $date, $description) {
+        Config::getDatabase().addData(self::$tableName, ["event_name" => $eventName, "user_id" => $userID, "date" => $date, "description" => $description]);
     }
 
     /*
