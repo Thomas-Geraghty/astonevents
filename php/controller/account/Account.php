@@ -6,6 +6,10 @@
  * Time: 17:41
  */
 
+require_once 'php/model/elements/Session.php';
+require_once 'php/model/elements/Users.php';
+
+
 abstract class Account{
 
     abstract function submitted();

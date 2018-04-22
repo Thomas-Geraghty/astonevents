@@ -6,10 +6,7 @@
  * Time: 18:22
  */
 
-require_once 'php/controller/Account.php';
-require_once 'php/model/elements/Session.php';
-require_once 'php/model/elements/Users.php';
-require_once 'php/Config.php';
+require_once 'php/controller/account/Signup.php';
 
 class Auth extends Account {
 
