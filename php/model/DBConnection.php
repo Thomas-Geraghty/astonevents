@@ -4,12 +4,10 @@
  * Author: Tom Geraghty
  * Date: 05/04/2018
  */
+error_reporting(-1);
+ini_set('display_error', 'On');
 
 
-/**
- * Class DBConnection
- * Generates a connection to the database,
- */
 class DBConnection {
     private $connection;
 
@@ -18,7 +16,6 @@ class DBConnection {
      */
     public function __construct($db, $host, $username, $password) {
         $this->connection = new PDO("mysql:dbname=$db;host=$host", $username, $password);
-        $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
     /*
@@ -40,7 +37,7 @@ class DBConnection {
      * Execute SQL statement.
      */
     public function run($sql) {
-        $this->connection->exec($sql);
+        return $this->connection->prepare($sql)->execute();
     }
 
     /*

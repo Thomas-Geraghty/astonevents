@@ -4,7 +4,7 @@
  * Date: 09/04/2018
  */
 
-require 'php/model/Database.php';
+require_once 'php/model/Database.php';
 
 class Config {
     const dbName = "astonevents";
@@ -18,6 +18,10 @@ class Config {
      * class and its methods.
      */
     public function __construct() {
+        $this->setupDB();
+    }
+
+    static function setupDB() {
         self::$database = new Database (
             self::dbName,
             self::dbHost,
@@ -30,6 +34,9 @@ class Config {
      * Returns database.
      */
     public static function getDatabase() {
+        if (self::$database == null) {
+            self::setupDB();
+        }
         return self::$database;
     }
 }
