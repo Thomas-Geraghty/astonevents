@@ -1,5 +1,5 @@
 <?php
-require 'php/Config.php';
+require_once 'php/Config.php';
 
 error_reporting(-1);
 ini_set('display_error', 'On');
@@ -16,10 +16,8 @@ class Users {
     /*
      * Adds a new event to the database.
      */
-    public static function createUser($username, $password, $email, $firstName, $lastName, $phone, $DOB) {
-        $config = new Config();
-
-        Config::getDatabase()->addRecord(self::$tableName, ["username" => $username, "password" => $password, "email" => $email, "first_name" => $firstName, "last_name" => $lastName, "phone" => $phone, "DOB" => $DOB]);
+    public static function createUser($username, $hash, $salt, $email, $firstName, $lastName, $phone, $DOB) {
+        Config::getDatabase()->addRecord(self::$tableName, ["username" => $username, "hash" => $hash, 'salt' => $salt, "email" => $email, "first_name" => $firstName, "last_name" => $lastName, "phone" => $phone, "DOB" => $DOB]);
     }
 
     /*
@@ -27,6 +25,10 @@ class Users {
      */
     public static function updateUser($userID, $data) {
         Config::getDatabase().deleteRecord(self::$tableName, $userID, $data);
+    }
+
+    public static function fetchUser($columns, $where) {
+        return Config::getDatabase()->fetchRecord(self::$tableName, $columns, $where);;
     }
 
     /*
