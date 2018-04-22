@@ -6,7 +6,7 @@
  * Time: 18:22
  */
 
-require_once 'php/controller/account/Signup.php';
+require_once 'php/controller/account/Account.php';
 
 class Auth extends Account {
 

@@ -1,9 +1,9 @@
 <?php
 session_start();
-
 require_once 'php/model/elements/Session.php';
-require_once 'php/controller/Signup.php';
-require_once 'php/controller/Auth.php';
+require_once 'php/controller/account/Signup.php';
+require_once 'php/controller/account/Auth.php';
+
 error_reporting(-1);
 ini_set('display_error', 'On');
 ?>
