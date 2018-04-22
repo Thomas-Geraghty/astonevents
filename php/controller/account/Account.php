@@ -8,19 +8,12 @@
 
 require_once 'php/model/elements/Session.php';
 require_once 'php/model/elements/Users.php';
+require_once 'php/controller/Interaction.php';
 
 
-abstract class Account{
+abstract class Account extends Interaction {
 
     abstract function submitted();
-
-    protected function sanitizeInput($data)
-    {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
-    }
 
     protected function generateSalt($length) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
