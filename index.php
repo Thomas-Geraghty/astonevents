@@ -92,8 +92,7 @@ ini_set('display_error', 'On');
                     </form>
                 </div>
             </div>
-        </div>
-    </div>
+        </div>    </div>
 </div>
 
 <?php include 'structure/footer.php' ?>
