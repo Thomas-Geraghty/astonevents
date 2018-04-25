@@ -1,8 +1,24 @@
 <?php
 session_start();
-require_once 'php/model/elements/Session.php';
-require_once 'php/controller/account/Signup.php';
-require_once 'php/controller/account/Auth.php';
+
+if (isset($_SERVER['HTTPS'])) {
+    $protocol = "https";
+} else {
+    $protocol = "http";
+}
+$base_url = $protocol . "://" . $_SERVER['HTTP_HOST'] . "/";
+$base_path = $_SERVER['DOCUMENT_ROOT'] . "/";
+
+define('BASEURL', $base_url);
+define('BASEPATH', $base_path);
+define('SITEURL', $base_url . "site/");
+define('SITEPATH', $base_path . "site/");
+define('REQUESTURL', $_SERVER['REQUEST_URI']);
+
+require_once BASEPATH . 'php/model/elements/Session.php';
+require_once BASEPATH . 'php/controller/account/Signup.php';
+require_once BASEPATH . 'php/controller/account/Auth.php';
+require_once BASEPATH . 'php/Config.php';
 
 error_reporting(-1);
 ini_set('display_error', 'On');
@@ -18,72 +34,63 @@ ini_set('display_error', 'On');
     <link rel="stylesheet" type="text/css" href="./css/sitewide.css">
 </head>
 <body>
-<script src="js/Login.js"></script>
 
+<!-- Navbar -->
 <?php include "structure/navbar.php"; ?>
+
 
 <!-- Header -->
 <div id="header" class="bg">
     <div class="pattern"></div>
     <div class="container">
-        <div class="section-header">
-            <h1 id="name-big">ASTON</h1>
-            <h1 id="name-small">events</h1>
+        <div id="logo" onclick="window.location.href='index.php'">
+            <h1>ASTON</h1>
+            <h2>events</h2>
         </div>
         <div class="header-content" style="top: 30%; position: absolute; width: 70%;">
-            <div style="
-                display: inline-block;
-                padding-right: 10%;
-                padding-top: 2%;
-                float: left;
-                width: 30%;
-                top: 15%;">
-                <h3 class="caption">Create your own events, contact organisers and more!</h3>
+            <div id="caption" class="left">
+                <h2>Create your own events, contact organisers and more!</h2>
                 <br><br><br>
-                <h3 class="caption" id="caption-link"><a href="index.php"> See all events</a></h3>
+                <h2 id="caption-link"><a class="content-link" href="index.php"> See all events</a></h2>
             </div>
-            <div style="
-                display: inline-block;
-                width: 50%;
-                padding: 2%;
-                background-color: rgba(6,33,49,0.70);">
-                <h3 class="caption">Sign up now</h3>
+            <div class="right dark">
+                <h2 class="caption">Sign up now</h2>
                 <div id="signup-form" style="padding-top: 2%;">
                     <form id="signup-table" method="POST">
                         <table>
                             <tr>
-                                <td><h4 class="label">Username:</h4></td>
+                                <td><h4>Username:</h4></td>
                                 <td><input name="username" class="form" type="text" maxlength="32"
-                                           placeholder="Username" onkeyup="checkUsername(this.value)" required></td>
+                                           placeholder="Username" onblur="liveUsernameSearch(this.value)" required></td>
                                 <td><h4 id="usernameMarker"></h4></td>
                             </tr>
                             <tr>
-                                <td><h4 class="label">Password:</h4></td>
+                                <td><h4>Password:</h4></td>
                                 <td><input name="password" class="form" type="password" maxlength="32"
                                            placeholder="Password" required></td>
                             </tr>
                             <tr>
-                                <td><h4 class="label">Email Address:</h4></td>
+                                <td><h4>Email Address:</h4></td>
                                 <td><input name="email" class="form" type="email" maxlength="254"
                                            placeholder="tom@example.com" required></td>
                             </tr>
                             <tr>
-                                <td><h4 class="label">First Name:</h4></td>
+                                <td><h4>First Name:</h4></td>
                                 <td><input name="first_name" class="form" type="text" maxlength="32"
                                            placeholder="First name" required></td>
                             </tr>
                             <tr>
-                                <td><h4 class="label">Last Name:</h4></td>
+                                <td><h4>Last Name:</h4></td>
                                 <td><input name="last_name" class="form" type="text" maxlength="32"
                                            placeholder="Last name" required></td>
                             </tr>
                             <tr>
-                                <td><h4 class="label">Phone Number:</h4></td>
+                                <td><h4>Phone Number:</h4></td>
                                 <td><input name="phone" class="form" type="phone" placeholder="Phone" maxlength="15"
                                            required></td>
                             </tr>
                             <tr>
-                                <td><h4 class="label">Date Of Birth:</h4></td>
+                                <td><h4>Date Of Birth:</h4></td>
                                 <td><input name="dob" class="form" type="date" required></td>
                             </tr>
                         </table>
@@ -92,14 +99,14 @@ ini_set('display_error', 'On');
                     </form>
                 </div>
             </div>
-        </div>    </div>
+        </div>
+    </div>
 </div>
 
 <?php include 'structure/footer.php' ?>
 
 <!-- Misc -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="js/smooth-scroll.js"></script>
-<script src="js/expand-element.js"></script>
+<script src="js/Signup.js"></script>
 </body>
 </html>
