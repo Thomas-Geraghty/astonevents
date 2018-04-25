@@ -20,7 +20,7 @@ class Session {
     public static function createSession($userID) {
         Config::getDatabase()->addRecord(self::$tableName, ['sessionID' => session_id(), 'userID' => $userID]);
         $_SESSION['userID'] = $userID;
-        $_SESSION['sessionStatus'] = 2;
+        $_SESSION['sessionStatus'] = 1; //logged in
     }
 
     public static function deleteSession() {
