@@ -4,9 +4,14 @@
  * Date: 09/04/2018
  */
 
-require_once 'php/model/Database.php';
+
+
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/Database.php';
 
 class Config {
+
+
+
     const dbName = "astonevents";
     const dbHost = "127.0.0.1";
     const username = "root";
