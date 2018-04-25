@@ -93,7 +93,6 @@ if (isset($_POST['event_edit'])):
 
     Events::updateEvent($postData['id'], ['event_name' => $postData['event_name'], 'event_type' => $postData['event_type'], 'event_time' => $postData['event_time'], 'event_location' => $postData['event_location'], 'event_description' => $postData['event_description']]);
 endif;
-
 if (isset($_POST['event_like'])):
     Events::likeEvent($_POST['event_id']);
 endif;
