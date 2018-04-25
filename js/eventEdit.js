@@ -4,7 +4,7 @@ function addEvent() {
         "<tr><td><h4 class='label'>Event name:</h4></td> <td><input name='event_name' class='form' type='text' required maxlength='255'></td></tr>" +
         "<tr><td><h4 class='label'>Event type:</h4></td> <td><select name='event_type' class='form' required > <option value='Sport'>Sport</option> <option value='Culture'>Culture</option> <option value='Other'>Other</option></td></tr>" +
         "<tr><td><h4 class='label'>Event date/time:</h4></td> <td><input name='event_time' class='form' type='datetime-local' required></td></tr>" +
-        "<tr><td><h4 class='label'>Event location:</h4></td> <td><input name='event_location' class='form' type='text' required></td></tr>" +
+        "<tr><td><h4 class='label'>Event location:</h4></td> <td><input name='event_location' class='form' type='text' maxlength='512' required></td></tr>" +
         "<tr><td><h4 class='label'>Event description:</h4></td> <td><textarea style='height: 100px' name='event_description' class='form'></textarea></td></tr>" +
         "<tr><td><h4 class='label'>Event Photo 1:</h4></td> <td> <input name='event_image1' type='file' accept='image/*'\></td> </tr>" +
         "<tr><td><h4 class='label'>Event Photo 2:</h4></td> <td> <input name='event_image2' type='file' accept='image/*'\></td> </tr>" +
@@ -14,8 +14,9 @@ function addEvent() {
         "</table>" +
         "</form>";
     $('#event-table').html($html);
-    $('#event-view-selectors').slideUp(150);
-    $('#add-event-button').fadeOut(150);
+    $('#event-view-selectors').fadeOut(150);
+    $('#event-category-selectors').slideUp(150);
+    $('#add-event-button').hide();
     document.getElementById('eventTitle').textContent = 'Add new event';
 }
 
@@ -23,7 +24,7 @@ function editEvent($eventID) {
     $.get('php/view/EventView.php', {'request_type': '3', 'event_ID': $eventID}, function (data) {
         var obj = JSON.parse(data);
         if(obj == false) {
-            document.getElementById('eventTitle').textContent = "404 - Event does not exist.";
+            window.location.href('error.php?e=404');
             var $html =
                 "<p>No event with ID (# " + $eventID + ").</p>" +
                 "<p>Check link for errors.</p>";
@@ -34,7 +35,7 @@ function editEvent($eventID) {
                 "<form method='POST'>" +
                 "<h2 id='eventTitle' class='title'>Editing: " + obj.event_name + "</h2>" +
                 "<div id='eventOptions'>" +
-                "<button style='float: right; background-color: #c12626' class='button'>Cancel</button>" +
+                "<button style='float: right; background-color: #c12626' class='button' onclick='accessEvent(" + $eventID + ")'>Cancel</button>" +
                 "<button style='float: right; background-color: green' class='button' type='submit'>Save changes</button>" +
                 "</div>" +
                 "<table style='width: 100%' class='eventInfoTable'>" +

@@ -7,6 +7,8 @@
  */
 
 require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/account/Account.php';
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/account/Auth.php';
+
 
 class Signup extends Account {
 
@@ -39,14 +41,48 @@ class Signup extends Account {
 ?>
 
 <?php
+$usernameErr = $emailErr = $firstnameErr = $lastnameErr = $phoneErr = $dobErr = "";
+
 if (isset($_POST['signup_submitted'])): //this code is executed when the form is submitted
     $whitelist = array('username', 'password', 'email', 'first_name', 'last_name', 'phone', 'dob');
     $postData = Interaction::sanitizeTextInputs($whitelist, $_POST);
+    $validationFailed = 'false';
 
-    $signup = new Signup();
+    if (!preg_match('/^[A-Za-z][A-Za-z0-9]{0,31}$/', $postData['username'])) {
+        $usernameErr = "Username must be only A-Z, 0-9. Maximum of 32 characters";
+        $validationFailed = 'true';
+    }
+    if (!filter_var($postData['email'], FILTER_VALIDATE_EMAIL) && strlen($postData['email']) < 255) {
+        $emailErr = "Email address not valid. Maximum 255 characters";
+        $validationFailed = 'true';
+    }
+    if (!preg_match('/^[A-Za-z]{0,31}$/', $postData['first_name'])) {
+        $firstnameErr = "First name must be only A-Z. Maximum of 32 characters";
+        $validationFailed = 'true';
+    }
+    if (!preg_match('/^[A-Za-z]{0,31}$/', $postData['last_name'])) {
+        $lastnameErr = "Last name must be only A-Z. Maximum of 32 characters";
+        $validationFailed = 'true';
+    }
+    if (!preg_match('/^[0-9]{0,15}$/', $postData['phone'])) {
+        $phoneErr = "Phone must be only number. Maximum of 15 characters";
+        $validationFailed = 'true';
+    }
+    if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $postData['dob'])) {
+        $dobErr = "DOB must be valid YYYY-MM-DD.";
+        $validationFailed = 'true';
+    }
 
-    $signup->sign_up($postData['username'], $postData['password'], $postData['email'],
-        $postData['first_name'], $postData['last_name'], $postData['phone'], $postData['dob']);
+
+    if ($validationFailed == 'false') {
+        $signup = new Signup();
+        $signup->sign_up($postData['username'], $postData['password'], $postData['email'],
+            $postData['first_name'], $postData['last_name'], $postData['phone'], $postData['dob']);
+
+        $login = new Auth();
+        $login->log_in($postData['username'], $postData['password']);
+
+    }
 endif;
 
 if (isset($_POST['usernameStr'])):

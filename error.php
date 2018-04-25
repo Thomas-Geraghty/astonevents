@@ -6,12 +6,9 @@ define('BASEPATH', $_SERVER["DOCUMENT_ROOT"]);
 require_once BASEPATH . '/php/model/elements/Session.php';
 require_once BASEPATH . '/php/controller/account/Signup.php';
 require_once BASEPATH . '/php/controller/account/Auth.php';
-require_once BASEPATH . '/php/Config.php';
-require_once BASEPATH . '/php/controller/errors/ErrorHandler.php';
+require_once BASEPATH . '/php/model/Config.php';
+require_once BASEPATH . '/php/view/errors/ErrorHandler.php';
 
-
-error_reporting(-1);
-ini_set('display_error', 'On');
 ?>
 
 <!DOCTYPE html>

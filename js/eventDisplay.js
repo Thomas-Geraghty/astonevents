@@ -6,6 +6,7 @@ function displayEvent($eventID, $userID) {
 
         //Event doesn't exist
         if(obj == false) {
+            window.location.href('error.php?e=404');
         } else {
             // EDIT/DELETE button
             if(obj.event_organiser == $userID) {
@@ -24,8 +25,6 @@ function displayEvent($eventID, $userID) {
                     "<h4 style='float: right; background-color: green' class='button' onclick='likeEvent(" + $eventID + ")'>Like 👍</h4>" +
                     "</div>";
             }
-
-
 
             $html +=
                 "<table style='width: 100%' class='eventInfoTable'>" +
@@ -53,6 +52,8 @@ function displayEvent($eventID, $userID) {
             }
             $html += "</div>";
             $('#event-table').html($html);
+            $('#event-category-selectors').hide();
+            $('#add-event-button').hide();
         }
     });
 }
@@ -60,12 +61,17 @@ function displayEvent($eventID, $userID) {
 function selectedEventView($id, $userID) {
     $('#event-view-selectors').children('.selectable-title').addClass('unselected');
     $('#' + $id).removeClass('unselected').addClass('selected');
+    $('#event-category-selectors').show();
+    $('#add-event-button').show();
+
+
 
     if($id === 'all-events-label') {
         $.get('php/view/EventView.php', {'request_type': '1'}, function (data) {
             var $table = generateTable(JSON.parse(data));
             $('#event-table').html($table);
         });
+        selectedEventCategory('all-category-label');
     }
 
     if($id === 'my-events-label') {
@@ -73,6 +79,25 @@ function selectedEventView($id, $userID) {
             var $table = generateTable(JSON.parse(data));
             $('#event-table').html($table);
         });
+    }
+    selectedEventCategory('all-category-label');
+}
+
+function selectedEventCategory($id) {
+    $('#event-category-selectors').children('.selectable-title').addClass('unselected');
+    $('#' + $id).removeClass('unselected').addClass('selected');
+
+    if($id === 'all-category-label') {
+        filterTable('All');
+    }
+    if($id === 'sport-category-label') {
+        filterTable('Sport');
+    }
+    if($id === 'culture-category-label') {
+        filterTable('Culture');
+    }
+    if($id === 'other-category-label') {
+        filterTable('Other');
     }
 }
 
@@ -151,6 +176,6 @@ function accessEvent($eventID) {
 }
 
 function likeEvent($event_ID) {
-    $.post('php/controller/event/Events.php', {'event_id': $event_ID, 'event_like' : true}, function (data) {
+    $.post('php/controller/event/Events.php', {'event_id': $event_ID, 'event_like' : 'true'}, function (data) {
     });
 }

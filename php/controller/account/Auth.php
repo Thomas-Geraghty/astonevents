@@ -46,7 +46,6 @@ if (isset($_POST['login_submitted'])): //this code is executed when the form is 
 
     $auth = new Auth();
     if($auth->log_in($postData['login-username'], $postData['login-password'])) {
-        header("Location: userArea.php");
     }
 endif;
 if (isset($_POST['logout_submitted'])): //this code is executed when the form is submitted

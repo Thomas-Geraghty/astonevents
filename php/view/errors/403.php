@@ -1,6 +1,6 @@
 <?php
 
-require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/errors/ErrorInterface.php';
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/view/errors/ErrorInterface.php';
 
 
 class error403 implements ErrorInterface {

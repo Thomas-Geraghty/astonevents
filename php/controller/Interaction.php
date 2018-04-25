@@ -7,14 +7,14 @@
  */
 
 abstract class Interaction {
-    private static function sanitizeText($text) {
+    static function sanitizeText($text) {
         $text = trim($text);
         $text = stripslashes($text);
         $text = htmlspecialchars($text);
         return $text;
     }
 
-    private static function sanitizeImage($image) {
+    static function sanitizeImage($image) {
         if(strstr(mime_content_type($image), 'image/')) {
             return $image;
         } else {

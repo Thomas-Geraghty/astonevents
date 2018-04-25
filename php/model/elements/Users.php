@@ -1,8 +1,5 @@
 <?php
-require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/Config.php';
-
-error_reporting(-1);
-ini_set('display_error', 'On');
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/Config.php';
 
 
 /**
@@ -16,8 +13,8 @@ class Users {
     /*
      * Adds a new event to the database.
      */
-    public static function createUser($username, $hash, $salt, $email, $firstName, $lastName, $phone, $DOB) {
-        Config::getDatabase()->addRecord(self::$tableName, ["username" => $username, "hash" => $hash, 'salt' => $salt, "email" => $email, "first_name" => $firstName, "last_name" => $lastName, "phone" => $phone, "DOB" => $DOB]);
+    public static function createUser($username, $hash, $salt, $email, $firstName, $lastName, $phone, $dob) {
+        Config::getDatabase()->addRecord(self::$tableName, ["username" => $username, "hash" => $hash, 'salt' => $salt, "email" => $email, "first_name" => $firstName, "last_name" => $lastName, "phone" => $phone, "dob" => $dob]);
     }
 
     /*

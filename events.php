@@ -4,8 +4,6 @@ session_start();
 require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/elements/Session.php';
 require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/view/EventView.php';
 require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/event/Events.php';
-error_reporting(-1);
-ini_set('display_error', 'On');
 ?>
 
 <!DOCTYPE html>
@@ -50,10 +48,10 @@ ini_set('display_error', 'On');
                     <?php endif; ?>
                 </div>
                 <div id="event-category-selectors">
-                    <h4 id="all-events-label" class='selectable-title' onclick="filterTable('All')">All</h4>
-                    <h4 id="all-events-label" class='selectable-title' onclick="filterTable('Sport')">Sports</h4>
-                    <h4 id="all-events-label" class='selectable-title' onclick="filterTable('Culture')">Culture</h4>
-                    <h4 id="all-events-label" class='selectable-title' onclick="filterTable('Other')">Other</h4>
+                    <h4 id="all-category-label" class='selectable-title' onclick="selectedEventCategory(this.id)">All</h4>
+                    <h4 id="sport-category-label" class='selectable-title unselected' onclick="selectedEventCategory(this.id)">Sports</h4>
+                    <h4 id="culture-category-label" class='selectable-title unselected' onclick="selectedEventCategory(this.id)">Culture</h4>
+                    <h4 id="other-category-label" class='selectable-title unselected' onclick="selectedEventCategory(this.id)">Other</h4>
                 </div>
                 <div id="event-table"></div>
                 <?php if(isset($_SESSION['sessionStatus'])): ?>

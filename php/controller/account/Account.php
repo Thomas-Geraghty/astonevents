@@ -17,7 +17,7 @@ abstract class Account extends Interaction {
 
     protected function generateSalt($length) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $max = mb_strlen($characters) - 1;
+        $max = strlen($characters) - 1;
         for ($i = 0; $i < $length; ++$i) {
             $parts[] = $characters[random_int(0, $max)];
         }

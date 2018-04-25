@@ -4,8 +4,7 @@
  * Author: Tom Geraghty
  * Date: 05/04/2018
  */
-error_reporting(-1);
-ini_set('display_error', 'On');
+
 
 
 class DBConnection {
@@ -37,7 +36,6 @@ class DBConnection {
      * Execute SQL statement.
      */
     public function run($sql) {
-        //echo $sql;
         return $this->connection->prepare($sql)->execute();
     }
 

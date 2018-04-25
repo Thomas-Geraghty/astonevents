@@ -5,7 +5,7 @@
  * Date: 09/04/2018
  */
 
-require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/Config.php';
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/Config.php';
 
 class EventView {
 
@@ -24,10 +24,6 @@ class EventView {
 
     public static function displayMyEvents($userID) {
         return Config::getDatabase()->fetchRecord("events", "*", ['event_organiser' => $userID])->fetchAll();
-    }
-
-    public static function displayCategoryEvents($category) {
-        return Config::getDatabase()->fetchRecord("events", "*", ['event_type' => $category])->fetchAll();
     }
 
     public static function displayAllEvents() {
@@ -49,11 +45,6 @@ if (isset($_GET['request_type'])):
     if($_GET['request_type'] == 3) {
         if (isset($_GET['event_ID'])) {
             echo json_encode(EventView::displayEvent($_GET['event_ID']));
-        }
-    }
-    if($_GET['request_type'] == 4) {
-        if (isset($_GET['category'])) {
-            echo json_encode(EventView::displayCategoryEvents($_GET['category']));
         }
     }
 endif;

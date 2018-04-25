@@ -6,26 +6,21 @@
  * Time: 17:13
  */
 
-require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/Config.php';
-error_reporting(-1);
-ini_set('display_error', 'On');
-
-//echo print_r($_SESSION);
-//echo session_id();
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/Config.php';
 
 class Session {
 
     private static $tableName = "sessions";
 
     public static function createSession($userID) {
-        Config::getDatabase()->addRecord(self::$tableName, ['sessionID' => session_id(), 'userID' => $userID]);
+        Config::getDatabase()->addRecord(self::$tableName, ['session_id' => session_id(), 'user_id' => $userID]);
         $_SESSION['userID'] = $userID;
         $_SESSION['sessionStatus'] = 1; //logged in
     }
 
     public static function deleteSession() {
         session_start();
-        Config::getDatabase()->deleteRecord(self::$tableName, ['sessionID' => session_id()]);
+        Config::getDatabase()->deleteRecord(self::$tableName, ['session_id' => session_id()]);
         session_unset();
         session_destroy();
     }

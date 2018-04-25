@@ -4,12 +4,11 @@
  * Date: 09/04/2018
  */
 
-require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/Config.php';
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/Config.php';
 require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/Interaction.php';
 
 class Events
 {
-
     private static $eventsTable = "events";
     private static $photosTable = "event_photos";
     private static $photosDir = 'event_photos/';
@@ -17,31 +16,41 @@ class Events
     /*
      * Adds a new event to the database.
      */
-    public static function createEvent($name, $type, $dateTime, $location, $description)
+    public static function createEvent($name, $type, $dateTime, $location, $description, $eventOrganiser)
     {
-        return Config::getDatabase()->addRecord(self::$eventsTable, ["event_name" => $name, "event_type" => $type, "event_time" => $dateTime, "event_location" => $location, "event_description" => $description, "event_organiser" => $_SESSION['userID']]);
+        return Config::getDatabase()->addRecord(self::$eventsTable, ["event_name" => $name, "event_type" => $type, "event_time" => $dateTime, "event_location" => $location, "event_description" => $description, "event_organiser" => $eventOrganiser]);
     }
 
     /*
      * Updates event.
      */
     public static function updateEvent($eventID, $data) {
-        Config::getDatabase()->updateRecord(self::$eventsTable, $data, ['id' => $eventID]);
+        $event = Config::getDatabase()->fetchRecord(self::$eventsTable, ['event_organiser'], ["id" => $eventID])->fetch();
+        if($event['event_organiser'] == $_SESSION['userID']) {
+            Config::getDatabase()->updateRecord(self::$eventsTable, $data, ['id' => $eventID]);
+        } else {
+            header('Location: error.php?e=403');
+        }
     }
 
     /*
      * Remves an new event to the database.
      */
-    public static function removeEvent($eventID)
-    {
-        Config::getDatabase()->deleteRecord(self::$photosTable, ["event_id" => $eventID]);
-        Config::getDatabase()->deleteRecord(self::$eventsTable, ["id" => $eventID]);
+    public static function removeEvent($eventID) {
+        session_start();
+        $event = Config::getDatabase()->fetchRecord(self::$eventsTable, ['event_organiser'], ["id" => $eventID])->fetch();
+        if($event['event_organiser'] == $_SESSION['userID']) {
+            Config::getDatabase()->deleteRecord(self::$photosTable, ["event_id" => $eventID]);
+            Config::getDatabase()->deleteRecord(self::$eventsTable, ["id" => $eventID]);
+        } else {
+            header('Location: error.php?e=403');
+        }
     }
 
     public static function likeEvent($eventID) {
-        $likeAmount = Config::getDatabase()->fetchRecord(self::$eventsTable, ['event_likes'], ['id' => $eventID])->fetch();
-        $newAmount = $likeAmount['event_likes'] + 1;
-        self::updateEvent($eventID, ['event_likes' => $newAmount]);
+        $event = Config::getDatabase()->fetchRecord(self::$eventsTable, ['event_likes'], ['id' => $eventID])->fetch();
+        $newAmount = ($event['event_likes'] + 1);
+        Config::getDatabase()->updateRecord(self::$eventsTable, ['event_likes' => $newAmount], ['id' => $eventID]);
     }
 
     public static function uploadEventPhoto($eventID, $file) {
@@ -60,27 +69,50 @@ class Events
     }
 }
 ?>
-
 <?php
+
+$eventNameErr = $eventTypeErr = $eventLocationErr = "";
+
 if (isset($_POST['event_submit'])):
     $whitelist = array('event_name', 'event_type', 'event_time', 'event_location', 'event_description');
     $postData = Interaction::sanitizeTextInputs($whitelist, $_POST);
-    $whitelist = array('event_image1', 'event_image2', 'event_image3');
+    $validationFailed = 'false';
 
-    array_push($postData, Interaction::sanitizeImageInputs($whitelist, $_POST));
+    array_push($postData, Interaction::sanitizeImageInputs($whitelist, $_FILES));
 
-    $id = Events::createEvent($postData['event_name'], $postData['event_type'], $postData['event_time'], $postData['event_location'], $postData['event_description']);
-
-    if (isset($_FILES['event_image1']) && strlen($_FILES['event_image1']['name']) > 0) {
-        Events::uploadEventPhoto($id, $_FILES['event_image1']);
+    if (!(strlen($postData['event_name']) > 0 && strlen($postData['event_name']) < 256)) {
+        $validationFailed = 'true';
     }
-    if (isset($_FILES['event_image2']) && strlen($_FILES['event_image2']['name']) > 0)  {
-        Events::uploadEventPhoto($id, $_FILES['event_image2']);
+
+    if (!($postData['event_type'] === 'Sport' || $postData['event_type'] === 'Culture' || $postData['event_type'] === "Other")) {
+        echo $validationFailed = 'true';
     }
-    if (isset($_FILES['event_image3']) && strlen($_FILES['event_image3']['name']) > 0)  {
-        Events::uploadEventPhoto($id, $_FILES['event_image3']);
+
+    if (!(strlen($postData['event_location']) > 0 && strlen($postData['event_location']) < 512)) {
+        $validationFailed = 'true';
+    }
+
+    if ($validationFailed == 'false') {
+        $whitelist = array('event_image1', 'event_image2', 'event_image3');
+
+
+        $id = Events::createEvent($postData['event_name'], $postData['event_type'], $postData['event_time'], $postData['event_location'], $postData['event_description'], $_SESSION['userID']);
+
+        if (isset($_FILES['event_image1']) && strlen($_FILES['event_image1']['name']) > 0) {
+            Events::uploadEventPhoto($id, $_FILES['event_image1']);
+        }
+        if (isset($_FILES['event_image2']) && strlen($_FILES['event_image2']['name']) > 0) {
+            Events::uploadEventPhoto($id, $_FILES['event_image2']);
+        }
+        if (isset($_FILES['event_image3']) && strlen($_FILES['event_image3']['name']) > 0) {
+            Events::uploadEventPhoto($id, $_FILES['event_image3']);
+        }
     }
 endif;
+if (isset($_POST['event_like'])):
+    Events::likeEvent($_POST['event_id']);
+endif;
+
 if (isset($_POST['event_delete'])):
     $whitelist = array('event_ID');
     $postData = Interaction::sanitizeTextInputs($whitelist, $_POST);
@@ -93,7 +125,5 @@ if (isset($_POST['event_edit'])):
 
     Events::updateEvent($postData['id'], ['event_name' => $postData['event_name'], 'event_type' => $postData['event_type'], 'event_time' => $postData['event_time'], 'event_location' => $postData['event_location'], 'event_description' => $postData['event_description']]);
 endif;
-if (isset($_POST['event_like'])):
-    Events::likeEvent($_POST['event_id']);
-endif;
+
 ?>
