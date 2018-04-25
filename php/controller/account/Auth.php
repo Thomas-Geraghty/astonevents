@@ -6,7 +6,7 @@
  * Time: 18:22
  */
 
-require_once 'php/controller/account/Account.php';
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/account/Account.php';
 
 class Auth extends Account {
 
@@ -20,7 +20,7 @@ class Auth extends Account {
 
         $user = Users::fetchUser(['id', 'username', 'hash'], ['hash' => $this->hash])->fetch();
         if($user[2] === $this->hash) {
-            Session::setSessionUserID($user[0]);
+            Session::createSession($user[0]);
             return true;
         } else {
             return false;
@@ -28,8 +28,8 @@ class Auth extends Account {
     }
 
     function log_in($username, $password) {
-        $this->username = parent::sanitizeInput($username);
-        $this->password = parent::sanitizeInput($password);
+        $this->username = $username;
+        $this->password = $password;
         return $this->submitted();
     }
 
@@ -41,12 +41,17 @@ class Auth extends Account {
 
 <?php
 if (isset($_POST['login_submitted'])): //this code is executed when the form is submitted
-    $auth = new Auth();
-    $username = $_POST['login-username'];
-    $password = $_POST['login-password'];
+    $whitelist = array('login-username', 'login-password');
+    $postData = Interaction::sanitizeTextInputs($whitelist, $_POST);
 
-    if($auth->log_in($username, $password)) {
-        header("Location: myEvents.php");
+    $auth = new Auth();
+    if($auth->log_in($postData['login-username'], $postData['login-password'])) {
+        header("Location: userArea.php");
     }
+endif;
+if (isset($_POST['logout_submitted'])): //this code is executed when the form is submitted
+
+    $auth = new Auth();
+    $auth->log_out();
 endif;
 ?>

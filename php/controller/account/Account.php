@@ -6,9 +6,9 @@
  * Time: 17:41
  */
 
-require_once 'php/model/elements/Session.php';
-require_once 'php/model/elements/Users.php';
-require_once 'php/controller/Interaction.php';
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/elements/Session.php';
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/elements/Users.php';
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/Interaction.php';
 
 
 abstract class Account extends Interaction {

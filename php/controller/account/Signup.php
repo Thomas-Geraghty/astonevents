@@ -6,7 +6,7 @@
  * Time: 18:22
  */
 
-require_once 'php/controller/account/Account.php';
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/account/Account.php';
 
 class Signup extends Account {
 
@@ -26,13 +26,13 @@ class Signup extends Account {
     }
 
     function sign_up($username, $password, $email, $firstName, $lastName, $phone, $dob) {
-        $this->username = parent::sanitizeInput($username);
-        $this->password = parent::sanitizeInput($password);
-        $this->email = parent::sanitizeInput($email);
-        $this->firstName = parent::sanitizeInput($firstName);
-        $this->lastName = parent::sanitizeInput($lastName);
-        $this->phone = parent::sanitizeInput($phone);
-        $this->dob = parent::sanitizeInput($dob);
+        $this->username = $username;
+        $this->password = $password;
+        $this->email = $email;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->phone = $phone;
+        $this->dob = $dob;
         $this->submitted();
     }
 }
@@ -40,18 +40,23 @@ class Signup extends Account {
 
 <?php
 if (isset($_POST['signup_submitted'])): //this code is executed when the form is submitted
+    $whitelist = array('username', 'password', 'email', 'first_name', 'last_name', 'phone', 'dob');
+    $postData = Interaction::sanitizeTextInputs($whitelist, $_POST);
+
     $signup = new Signup();
 
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $email = $_POST['email'];
-    $firstName = $_POST['first_name'];
-    $lastName = $_POST['last_name'];
-    $phone = $_POST['phone'];
-    $dob = $_POST['dob'];
+    $signup->sign_up($postData['username'], $postData['password'], $postData['email'],
+        $postData['first_name'], $postData['last_name'], $postData['phone'], $postData['dob']);
+endif;
 
-    $signup->sign_up($username, $password, $email, $firstName, $lastName, $phone, $dob);
-    $signup->submitted();
-    header("Location: myEvents.php");
+if (isset($_POST['usernameStr'])):
+    $whitelist = array('usernameStr');
+    $postData = Interaction::sanitizeTextInputs($whitelist, $_POST);
+
+    $match = Users::fetchUser(['username'], ['username' => $postData['usernameStr']])->fetch();
+
+    if($match[0] == null) {
+        echo 1;
+    }
 endif;
 ?>
