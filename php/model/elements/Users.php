@@ -1,5 +1,5 @@
 <?php
-require_once 'php/Config.php';
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/Config.php';
 
 error_reporting(-1);
 ini_set('display_error', 'On');
