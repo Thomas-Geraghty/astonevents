@@ -4,7 +4,7 @@
  * Date: 06/04/2018
  */
 
-require_once 'php/model/DBConnection.php';
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/DBConnection.php';
 
 class database
 {
@@ -54,6 +54,7 @@ class database
 
         $query = "INSERT  INTO " . $table . "(" . $fields . ") VALUES (" . $values . ")";
         $this->dbConnection->run($query);
+        return $this->dbConnection->getConnection()->lastInsertId();
     }
 
     /*
@@ -69,7 +70,7 @@ class database
 
         foreach ($data as $key => $value) {
             $iterator++;
-            $fields .= $key . " = " . $value;
+            $fields .= $key . " = '" . $value . "'";
             if ($iterator < $dataLength) {
                 $fields .= ", ";
             }
@@ -82,7 +83,7 @@ class database
             $iterator = 0;
             foreach ($wheres as $key => $value) {
                 $iterator++;
-                $wheresString .= $key." = '".$value."'";
+                $wheresString .= $key . " = '" . $value . "'";
                 if ($iterator < $whereAmount) {
                     $wheresString .= " AND ";
                 }

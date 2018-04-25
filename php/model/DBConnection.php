@@ -37,6 +37,7 @@ class DBConnection {
      * Execute SQL statement.
      */
     public function run($sql) {
+        //echo $sql;
         return $this->connection->prepare($sql)->execute();
     }
 
