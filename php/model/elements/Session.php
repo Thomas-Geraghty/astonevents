@@ -6,7 +6,7 @@
  * Time: 17:13
  */
 
-require_once 'php/Config.php';
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/Config.php';
 error_reporting(-1);
 ini_set('display_error', 'On');
 
@@ -17,13 +17,14 @@ class Session {
 
     private static $tableName = "sessions";
 
-    public static function setSessionUserID($userID) {
+    public static function createSession($userID) {
         Config::getDatabase()->addRecord(self::$tableName, ['sessionID' => session_id(), 'userID' => $userID]);
         $_SESSION['userID'] = $userID;
         $_SESSION['sessionStatus'] = 2;
     }
 
-    public static function deleteSession($sessionID) {
+    public static function deleteSession() {
+        session_start();
         Config::getDatabase()->deleteRecord(self::$tableName, ['sessionID' => session_id()]);
         session_unset();
         session_destroy();
