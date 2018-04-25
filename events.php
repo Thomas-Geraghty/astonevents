@@ -17,36 +17,54 @@ ini_set('display_error', 'On');
     <meta name="theme-color" content="#0086e7">
     <link rel="stylesheet" type="text/css" href="./css/sitewide.css">
 </head>
-<script src="js/events.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="js/eventDisplay.js"></script>
 
 <?php if(isset($_GET['eventID'])):
-        if(isset($_SESSION['userID'])): ?>
+        if(isset($_SESSION['sessionStatus'])): ?>
             <body onload="displayEvent(<?php echo $_GET['eventID'] . ", " . $_SESSION['userID'] ?>)">
-        <?php else: ?>
+            <script src="js/eventEdit.js"></script>
+            <?php else: ?>
             <body onload="displayEvent(<?php echo $_GET['eventID'] ?>)">
         <?php endif ?>
+<?php elseif(isset($_SESSION['sessionStatus'])): ?>
+        <body onload="selectedEventView('all-events-label')">
+        <script src="js/eventEdit.js"></script>
 <?php else: ?>
-    <body onload="displayAllEvents()">
+        <body onload="selectedEventView('all-events-label')">
 <?php endif ?>
 
-<?php include "structure/navbar.php"; ?>
 
 <!-- Header -->
-<div id="header" class="bg">
+<?php include "structure/header.php"; ?>
+
+<div id="content">
     <div class="container">
-        <div id="logo" onclick="window.location.href='index.php'">
-            <h1>ASTON</h1>
-            <h2>events</h2>
-        </div>
-            <div id="eventView-Large" class="content-inner dark">
-                <div id="eventView"></div>
+        <div id="eventView-Large" class="content-inner dark">
+            <div id="eventView">
+                <h2 id='eventTitle' class='title'>Events</h2>
+                <div id="event-view-selectors">
+                    <h3 id="all-events-label" class='selectable-title' onclick='selectedEventView(this.id, 0)'>All events</h3>
+                    <?php if(isset($_SESSION['sessionStatus'])): ?>
+                    <h3 id="my-events-label"  class='selectable-title' onclick='selectedEventView(this.id, <?php echo $_SESSION['userID'] ?>)'>My events</h3>
+                    <?php endif; ?>
+                </div>
+                <div id="event-category-selectors">
+                    <h4 id="all-events-label" class='selectable-title' onclick="filterTable('All')">All</h4>
+                    <h4 id="all-events-label" class='selectable-title' onclick="filterTable('Sport')">Sports</h4>
+                    <h4 id="all-events-label" class='selectable-title' onclick="filterTable('Culture')">Culture</h4>
+                    <h4 id="all-events-label" class='selectable-title' onclick="filterTable('Other')">Other</h4>
+                </div>
+                <div id="event-table"></div>
+                <?php if(isset($_SESSION['sessionStatus'])): ?>
+                    <a id="add-event-button" class="button" onclick="addEvent()">Add event</a>
+                <?php endif; ?>
             </div>
         </div>
     </div>
+</div>
 
 <?php include 'structure/footer.php' ?>
 
-<!-- Misc -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </body>
 </html>
