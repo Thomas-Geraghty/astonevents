@@ -7,6 +7,7 @@
  */
 
 require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/account/Account.php';
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/Session.php';
 
 class Auth extends Account {
 
@@ -23,7 +24,7 @@ class Auth extends Account {
             Session::createSession($user[0]);
             return true;
         } else {
-            return false;
+            return 0;
         }
     }
 
@@ -34,22 +35,20 @@ class Auth extends Account {
     }
 
     function log_out() {
-        Session::deleteSession(session_id());
+        Session::deleteSession();
     }
 }
 ?>
 
 <?php
-if (isset($_POST['login_submitted'])): //this code is executed when the form is submitted
-    $whitelist = array('login-username', 'login-password');
+if (isset($_POST['login'])):
+    $whitelist = array('username', 'password');
     $postData = Interaction::sanitizeTextInputs($whitelist, $_POST);
-
     $auth = new Auth();
-    if($auth->log_in($postData['login-username'], $postData['login-password'])) {
-    }
+    echo $auth->log_in($postData['username'], $postData['password']);
 endif;
-if (isset($_POST['logout_submitted'])): //this code is executed when the form is submitted
 
+if (isset($_POST['logout'])):
     $auth = new Auth();
     $auth->log_out();
 endif;

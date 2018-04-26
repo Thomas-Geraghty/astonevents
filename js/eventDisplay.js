@@ -1,5 +1,6 @@
 function displayEvent($eventID, $userID) {
-    $.get('php/view/EventView.php', {'request_type': '3', 'event_ID': $eventID}, function (data) {
+
+    $.get('/php/controller/event/Events.php', {'request_type': '3', 'event_ID': $eventID}, function (data) {
 
         var obj = JSON.parse(data);
         var $html = "";
@@ -22,7 +23,8 @@ function displayEvent($eventID, $userID) {
                 $html +=
                     "<h2 id='eventTitle' class='title'>" + obj.event_name + "</h2>" +
                     "<div id='eventOptions'>" +
-                    "<h4 style='float: right; background-color: green' class='button' onclick='likeEvent(" + $eventID + ")'>Like 👍</h4>" +
+                    "<h4 id='like-button' style='float: right; background-color: green' class='button' onclick='likeEvent(" + $eventID + ")'>Like 👍</h4>" +
+                    "<h4 id='like-counter' style='float: right; background-color: green' class='button'>" + obj.event_likes + "</h4>" +
                     "</div>";
             }
 
@@ -48,7 +50,7 @@ function displayEvent($eventID, $userID) {
                 "<div>";
 
             for (i = 0; i < obj.photos.length; i++) {
-                $html += "<img class='eventPhoto' src='" + obj.photos[i]['file_location'] + "'>";
+                $html += "<img class='eventPhoto' src='/" + obj.photos[i]['file_location'] + "'>";
             }
             $html += "</div>";
             $('#event-table').html($html);
@@ -65,9 +67,8 @@ function selectedEventView($id, $userID) {
     $('#add-event-button').show();
 
 
-
     if($id === 'all-events-label') {
-        $.get('php/view/EventView.php', {'request_type': '1'}, function (data) {
+        $.get('/php/controller/event/Events.php', {'request_type': '1'}, function (data) {
             var $table = generateTable(JSON.parse(data));
             $('#event-table').html($table);
         });
@@ -75,7 +76,7 @@ function selectedEventView($id, $userID) {
     }
 
     if($id === 'my-events-label') {
-        $.get('php/view/EventView.php', {'request_type': '2', 'user_ID': $userID}, function (data) {
+        $.get('/php/controller/event/Events.php', {'request_type': '2', 'user_ID': $userID}, function (data) {
             var $table = generateTable(JSON.parse(data));
             $('#event-table').html($table);
         });
@@ -172,10 +173,11 @@ function sortTable($columnNumber) {
 }
 
 function accessEvent($eventID) {
-    window.location.href('events.php?eventID='+$eventID);
+    window.location.href('events.php?id='+$eventID);
 }
 
 function likeEvent($event_ID) {
-    $.post('php/controller/event/Events.php', {'event_id': $event_ID, 'event_like' : 'true'}, function (data) {
+    $.post('/php/controller/event/Events.php', {'event_id': $event_ID, 'event_like' : 'true'}, function (data) {
+        displayEvent($event_ID, 0);
     });
 }

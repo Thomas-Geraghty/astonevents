@@ -1,5 +1,5 @@
 function addEvent() {
-    var $html = "<form id='event_create' enctype='multipart/form-data' method='POST'>" +
+    var $html = "<form id='event_create' enctype='multipart/form-data' href='php/view/events.php' method='POST'>" +
         "<table class='table'>" +
         "<tr><td><h4 class='label'>Event name:</h4></td> <td><input name='event_name' class='form' type='text' required maxlength='255'></td></tr>" +
         "<tr><td><h4 class='label'>Event type:</h4></td> <td><select name='event_type' class='form' required > <option value='Sport'>Sport</option> <option value='Culture'>Culture</option> <option value='Other'>Other</option></td></tr>" +
@@ -21,7 +21,7 @@ function addEvent() {
 }
 
 function editEvent($eventID) {
-    $.get('php/view/EventView.php', {'request_type': '3', 'event_ID': $eventID}, function (data) {
+    $.get('/php/controller/event/Events.php', {'request_type': '3', 'event_ID': $eventID}, function (data) {
         var obj = JSON.parse(data);
         if(obj == false) {
             window.location.href('error.php?e=404');
@@ -66,7 +66,7 @@ function editEvent($eventID) {
 
 function deleteEvent($eventID) {
     if(confirm("Do you want to delete this event?")) {
-        $.post('php/controller/event/Events.php', {'event_delete': true,'event_ID': $eventID}, function (data) {
+        $.post('/php/controller/event/Events.php', {'event_delete': true,'event_ID': $eventID}, function (data) {
             window.location.href('events.php');
         });
     }

@@ -1,14 +1,14 @@
 <?php
-session_start();
+define('BASEPATH', $_SERVER["DOCUMENT_ROOT"]);
 
-require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/elements/Session.php';
-require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/account/Signup.php';
-require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/account/Auth.php';
-require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/Config.php';
-
-
+require_once BASEPATH . '/php/controller/Session.php';
+require_once BASEPATH . '/php/controller/account/Signup.php';
+require_once BASEPATH . '/php/model/Config.php';
 ?>
 
+<?php if ($_SESSION['sessionStatus'] = 1): ?>
+<script> window.location.replace('/view/events.php') </script>
+<?php endif; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,11 +20,8 @@ require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/Config.php';
 </head>
 <body>
 
-<!-- Navbar -->
-
-
 <!-- Header -->
-<?php include "structure/header.php"; ?>
+<?php include ($_SERVER["DOCUMENT_ROOT"]) . "/view/structure/header.php"; ?>
 
 
 <div id="content">
@@ -32,7 +29,7 @@ require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/Config.php';
         <div id="caption" class="left">
             <h2>Create your own events, contact organisers and more!</h2>
             <br><br><br>
-            <h2 id="caption-link"><a class="content-link" href="events.php"> See all events</a></h2>
+            <h2 id="caption-link"><a class="content-link" href="view/events.php"> See all events</a></h2>
         </div>
         <div class="right dark">
             <h2 class="caption">Sign up now</h2>
@@ -42,7 +39,7 @@ require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/Config.php';
                         <tr>
                             <td><h4>Username:</h4></td>
                             <td><input name="username" class="form" type="text" maxlength="32"
-                                       placeholder="Username" onblur="liveUsernameSearch(this.value)" required></td>
+                                       placeholder="Username" onblur="usernameCheck(this.value)" required></td>
                             <td><h4 id="usernameMarker"> <?php echo $usernameErr ?> </h4></td>
                         </tr>
                         <tr>
@@ -88,7 +85,7 @@ require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/Config.php';
     </div>
 </div>
 
-<?php include 'structure/footer.php' ?>
+<?php include ($_SERVER["DOCUMENT_ROOT"]) . '/view/structure/footer.php' ?>
 
 <!-- Misc -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

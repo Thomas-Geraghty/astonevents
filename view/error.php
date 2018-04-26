@@ -1,13 +1,11 @@
 <?php
-session_start();
-
 define('BASEPATH', $_SERVER["DOCUMENT_ROOT"]);
 
-require_once BASEPATH . '/php/model/elements/Session.php';
+require_once BASEPATH . '/php/controller/Session.php';
 require_once BASEPATH . '/php/controller/account/Signup.php';
 require_once BASEPATH . '/php/controller/account/Auth.php';
 require_once BASEPATH . '/php/model/Config.php';
-require_once BASEPATH . '/php/view/errors/ErrorHandler.php';
+require_once BASEPATH . '/view/errors/ErrorHandler.php';
 
 ?>
 
@@ -18,18 +16,17 @@ require_once BASEPATH . '/php/view/errors/ErrorHandler.php';
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
     <meta name="theme-color" content="#0086e7">
-    <link rel="stylesheet" type="text/css" href="./css/sitewide.css">
+    <link rel="stylesheet" type="text/css" href="../../css/sitewide.css">
 </head>
 
-<script src="js/error.js"></script>
+<script src="../../js/error.js"></script>
 
 <?php if(isset($_GET['e'])): ?>
 <body onload="errorMsg(<?php echo $_GET['e'] ?>)">
 <?php endif; ?>
 
 <!-- Header -->
-<?php include "structure/header.php"; ?>
-
+<?php include (BASEPATH . "/view/structure/header.php"); ?>
 
 <div id="content">
     <div class="container">
@@ -43,10 +40,9 @@ require_once BASEPATH . '/php/view/errors/ErrorHandler.php';
 </div>
 
 
-<?php include 'structure/footer.php' ?>
+<?php include (BASEPATH . "/view/structure/footer.php"); ?>
 
 <!-- Misc -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="js/Signup.js"></script>
 </body>
 </html>

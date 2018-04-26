@@ -1,9 +1,10 @@
 <?php
-session_start();
+define('BASEPATH', $_SERVER["DOCUMENT_ROOT"]);
 
-require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/elements/Session.php';
-require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/view/EventView.php';
-require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/event/Events.php';
+require_once BASEPATH . '/php/controller/Session.php';
+require_once BASEPATH . '/php/controller/event/Events.php';
+require_once BASEPATH . '/php/controller/event/Events.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -13,28 +14,29 @@ require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/event/Events.php';
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
     <meta name="theme-color" content="#0086e7">
-    <link rel="stylesheet" type="text/css" href="./css/sitewide.css">
+    <link rel="stylesheet" type="text/css" href="../../css/sitewide.css">
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="js/eventDisplay.js"></script>
 
-<?php if(isset($_GET['eventID'])):
+
+
+<?php if(isset($_GET['id'])):
         if(isset($_SESSION['sessionStatus'])): ?>
-            <body onload="displayEvent(<?php echo $_GET['eventID'] . ", " . $_SESSION['userID'] ?>)">
-            <script src="js/eventEdit.js"></script>
+            <body onload="displayEvent(<?php echo $_GET['id'] . ", " . $_SESSION['userID'] ?>)">
+            <script src="/js/eventEdit.js"></script>
             <?php else: ?>
-            <body onload="displayEvent(<?php echo $_GET['eventID'] ?>)">
+            <body onload="displayEvent(<?php echo $_GET['id'] ?>)">
         <?php endif ?>
 <?php elseif(isset($_SESSION['sessionStatus'])): ?>
         <body onload="selectedEventView('all-events-label')">
-        <script src="js/eventEdit.js"></script>
+        <script src="/js/eventEdit.js"></script>
 <?php else: ?>
         <body onload="selectedEventView('all-events-label')">
 <?php endif ?>
 
 
 <!-- Header -->
-<?php include "structure/header.php"; ?>
+<?php include ($_SERVER["DOCUMENT_ROOT"]) . "/view/structure/header.php"; ?>
 
 <div id="content">
     <div class="container">
@@ -62,7 +64,8 @@ require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/event/Events.php';
     </div>
 </div>
 
-<?php include 'structure/footer.php' ?>
+<?php include ($_SERVER["DOCUMENT_ROOT"]) . "/view/structure/footer.php"; ?>
 
+<script src="/js/eventDisplay.js"></script>
 </body>
 </html>

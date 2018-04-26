@@ -6,8 +6,7 @@
 
 require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/DBConnection.php';
 
-class database
-{
+class database{
 
     private $dbConnection = null;
 
@@ -18,12 +17,10 @@ class database
     {
         $this->dbConnection = new DBConnection($name, $host, $username, $password);
     }
-
     /*
      * Closes database connection.
      */
-    public function __destruct()
-    {
+    public function __destruct() {
         $this->dbConnection = null;
     }
 
@@ -90,7 +87,7 @@ class database
             }
             $sql .= " WHERE ".$wheresString;
         }
-        $this->dbConnection->run($sql);
+        return $this->dbConnection->run($sql);
     }
 
     public function fetchRecord($table, $columns, $wheres)
@@ -129,6 +126,11 @@ class database
         return $this->dbConnection->getConnection()->query($sql);
     }
 
+    public function fetchLatestRecord($table) {
+        $sql = "SELECT * FROM ". $table ." ORDER BY id DESC LIMIT 1";
+        return $this->dbConnection->run($sql);
+    }
+
     /*
      * Removes data into table, data array must be passed as a tuple (key => value)
      * First parameter is for the table, second is for the data array.
@@ -157,5 +159,4 @@ class database
         $this->dbConnection->run($sql);
     }
 }
-
 ?>

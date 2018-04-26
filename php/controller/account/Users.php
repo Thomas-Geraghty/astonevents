@@ -14,7 +14,7 @@ class Users {
      * Adds a new event to the database.
      */
     public static function createUser($username, $hash, $salt, $email, $firstName, $lastName, $phone, $dob) {
-        Config::getDatabase()->addRecord(self::$tableName, ["username" => $username, "hash" => $hash, 'salt' => $salt, "email" => $email, "first_name" => $firstName, "last_name" => $lastName, "phone" => $phone, "dob" => $dob]);
+        return Config::getDatabase()->addRecord(self::$tableName, ["username" => $username, "hash" => $hash, 'salt' => $salt, "email" => $email, "first_name" => $firstName, "last_name" => $lastName, "phone" => $phone, "dob" => $dob]);
     }
 
     /*

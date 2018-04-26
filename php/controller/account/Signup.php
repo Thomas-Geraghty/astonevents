@@ -24,7 +24,7 @@ class Signup extends Account {
         $salt = parent::generateSalt(16);
         $hash = parent::hashPassword($this->password, $salt);
 
-        Users::createUser($this->username, $hash, $salt, $this->email, $this->firstName, $this->lastName, $this->phone, $this->dob);
+        return Users::createUser($this->username, $hash, $salt, $this->email, $this->firstName, $this->lastName, $this->phone, $this->dob);
     }
 
     function sign_up($username, $password, $email, $firstName, $lastName, $phone, $dob) {
@@ -35,7 +35,7 @@ class Signup extends Account {
         $this->lastName = $lastName;
         $this->phone = $phone;
         $this->dob = $dob;
-        $this->submitted();
+        return $this->submitted();
     }
 }
 ?>
@@ -52,6 +52,12 @@ if (isset($_POST['signup_submitted'])): //this code is executed when the form is
         $usernameErr = "Username must be only A-Z, 0-9. Maximum of 32 characters";
         $validationFailed = 'true';
     }
+
+    if(Users::fetchUser(['username'], ['username' => $postData['username']])->fetch()[0] != null) {
+        $usernameErr = "Username already taken";
+        $validationFailed = 'true';
+    }
+
     if (!filter_var($postData['email'], FILTER_VALIDATE_EMAIL) && strlen($postData['email']) < 255) {
         $emailErr = "Email address not valid. Maximum 255 characters";
         $validationFailed = 'true';
@@ -81,7 +87,6 @@ if (isset($_POST['signup_submitted'])): //this code is executed when the form is
 
         $login = new Auth();
         $login->log_in($postData['username'], $postData['password']);
-
     }
 endif;
 
@@ -91,7 +96,11 @@ if (isset($_POST['usernameStr'])):
 
     $match = Users::fetchUser(['username'], ['username' => $postData['usernameStr']])->fetch();
 
+    //username available
     if($match[0] == null) {
+        echo 0;
+    } //username taken
+    else {
         echo 1;
     }
 endif;

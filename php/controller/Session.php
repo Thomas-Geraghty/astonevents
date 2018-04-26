@@ -5,8 +5,9 @@
  * Date: 16/04/2018
  * Time: 17:13
  */
-
 require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/Config.php';
+session_start();
+
 
 class Session {
 
@@ -19,7 +20,6 @@ class Session {
     }
 
     public static function deleteSession() {
-        session_start();
         Config::getDatabase()->deleteRecord(self::$tableName, ['session_id' => session_id()]);
         session_unset();
         session_destroy();

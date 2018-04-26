@@ -4,8 +4,6 @@
  * Date: 09/04/2018
  */
 
-
-
 require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/Database.php';
 
 class Config {
