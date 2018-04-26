@@ -37,7 +37,6 @@ class Events
      * Remves an new event to the database.
      */
     public static function removeEvent($eventID) {
-        session_start();
         $event = Config::getDatabase()->fetchRecord(self::$eventsTable, ['event_organiser'], ["id" => $eventID])->fetch();
         if($event['event_organiser'] == $_SESSION['userID']) {
             Config::getDatabase()->deleteRecord(self::$photosTable, ["event_id" => $eventID]);

@@ -6,7 +6,7 @@ require_once BASEPATH . '/php/controller/account/Signup.php';
 require_once BASEPATH . '/php/model/Config.php';
 ?>
 
-<?php if ($_SESSION['sessionStatus'] = 1): ?>
+<?php if(isset($_SESSION['sessionStatus'])): ?>
 <script> window.location.replace('/view/events.php') </script>
 <?php endif; ?>
 <!DOCTYPE html>
