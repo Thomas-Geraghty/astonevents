@@ -3,7 +3,6 @@ define('BASEPATH', $_SERVER["DOCUMENT_ROOT"]);
 
 require_once BASEPATH . '/php/controller/Session.php';
 require_once BASEPATH . '/php/controller/event/Events.php';
-require_once BASEPATH . '/php/controller/event/Events.php';
 
 ?>
 

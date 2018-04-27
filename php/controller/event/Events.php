@@ -6,7 +6,7 @@
 
 require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/model/Config.php';
 require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/Interaction.php';
-
+require_once ($_SERVER["DOCUMENT_ROOT"]) . '/php/controller/Session.php';
 
 class Events
 {
@@ -151,7 +151,6 @@ endif;
 if (isset($_POST['event_delete'])):
     $whitelist = array('event_ID');
     $postData = Interaction::sanitizeTextInputs($whitelist, $_POST);
-
     Events::removeEvent($postData['event_ID']);
 endif;
 if (isset($_POST['event_edit'])):

@@ -152,11 +152,11 @@ function sortTable($columnNumber) {
             x = rows[i].getElementsByTagName("td")[$columnNumber];
             y = rows[i+1].getElementsByTagName("td")[$columnNumber];
             if (direction === "asc") {
-                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                if (+x.innerHTML.toLowerCase() > +y.innerHTML.toLowerCase()) {
                     shouldSwitch= true;
                     break;
                 }
-            } else if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            } else if (+x.innerHTML.toLowerCase() < +y.innerHTML.toLowerCase()) {
                 shouldSwitch= true;
                 break;
             }
